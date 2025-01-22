@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Graphics } from "pixi.js";
 
 (async () => {
   const app = new Application();
@@ -11,5 +11,14 @@ import { Application } from "pixi.js";
   });
   app.canvas.style.position = "absolute";
   document.body.style.margin = 0;
+
+  const rectangle = new Graphics();
+  rectangle.rect(200, 200, 100, 150);
+  rectangle.fill({
+    color: "#e74c3c",
+    alpha: 1,
+  });
+  app.stage.addChild(rectangle);
+
   document.body.appendChild(app.canvas);
 })();
