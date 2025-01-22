@@ -12,12 +12,16 @@ import { Application, Graphics } from "pixi.js";
   app.canvas.style.position = "absolute";
   document.body.style.margin = 0;
 
-  const rectangle = new Graphics();
-  rectangle.rect(200, 200, 100, 150);
-  rectangle.fill({
-    color: "#e74c3c",
-    alpha: 1,
-  });
+  const rectangle = new Graphics()
+    .rect(200, 200, 100, 150)
+    .fill({
+      color: "#e74c3c",
+      alpha: 1,
+    })
+    .stroke({
+      width: 8,
+      color: "#f39c12",
+    });
   app.stage.addChild(rectangle);
 
   document.body.appendChild(app.canvas);
