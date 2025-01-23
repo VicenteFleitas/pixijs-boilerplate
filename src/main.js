@@ -50,8 +50,14 @@ import {
   });
   app.stage.addChild(text);
 
-  const texture = await Assets.load("/img/SpriteSheet.png");
-  const sprite = new Sprite(texture); // 128, 224
+  Assets.addBundle("knighs", {
+    gold: "/img/SpriteSheet2.png",
+    grey: "/img/SpriteSheet.png",
+  });
+  const knighsAssets = await Assets.loadBundle("knighs");
+
+  //   const texture = await Assets.load("/img/SpriteSheet.png");
+  const sprite = new Sprite(knighsAssets.grey); // 128, 224
   sprite.x = 512;
   sprite.y = 256;
   sprite.scale.x = 2;
@@ -81,8 +87,8 @@ import {
   const warriorsContainer = new Container();
   app.stage.addChild(warriorsContainer);
 
-  const knighTexture = await Assets.load("/img/SpriteSheet2.png");
-  const knighSprite = new Sprite(knighTexture);
+  //   const knighTexture = await Assets.load("/img/SpriteSheet2.png");
+  const knighSprite = new Sprite(knighsAssets.gold);
   knighSprite.scale.set(2, 2);
 
   warriorsContainer.addChild(knighSprite);

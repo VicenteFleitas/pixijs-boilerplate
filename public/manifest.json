@@ -1,0 +1,17 @@
+{
+  "bundles": [
+    {
+      "name": "knighs",
+      "assets": [
+        {
+          "alias": "grey",
+          "src": "/img/SpriteSheet.png"
+        },
+        {
+          "alias": "gold",
+          "src": "/img/SpriteSheet2.png"
+        }
+      ]
+    }
+  ]
+}
