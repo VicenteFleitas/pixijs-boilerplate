@@ -6,6 +6,8 @@ import {
   Sprite,
   Assets,
   Container,
+  Spritesheet,
+  AnimatedSprite,
 } from "pixi.js";
 
 (async () => {
@@ -19,79 +21,70 @@ import {
   });
   app.canvas.style.position = "absolute";
   document.body.style.margin = 0;
-
-  const rectangle = new Graphics()
-    .rect(200, 200, 100, 150)
-    .fill({
-      color: "#e74c3c",
-      alpha: 1,
-    })
-    .stroke({
-      width: 8,
-      color: "#f39c12",
-    });
-  app.stage.addChild(rectangle);
-  rectangle.eventMode = "static";
-  rectangle.cursor = "pointer";
-  rectangle.on("mousedown", (event) => {
-    rectangle.x -= 5;
-    rectangle.y -= 5;
-  });
-
-  //   Assets.addBundle("knighs", {
-  //     gold: "/img/SpriteSheet2.png",
-  //     grey: "/img/SpriteSheet.png",
-  //   });
-  await Assets.init({ manifest: "/manifest.json" });
-  const knighsAssets = await Assets.loadBundle("knighs");
-
-  const sprite = new Sprite(knighsAssets.grey); // 128, 224
-  sprite.x = 512;
-  sprite.y = 256;
-  sprite.scale.x = 2;
-  sprite.scale.y = 2;
-  sprite.anchor.x = 0.5;
-  sprite.anchor.y = 0.5;
-  sprite.rotation = Math.PI / 4;
-  app.stage.addChild(sprite);
-
-  const circle = new Graphics();
-
-  app.ticker.add(() => {
-    circle
-      .circle(
-        Math.random() * app.screen.width,
-        Math.random() * app.screen.height,
-        5
-      )
-      .fill({
-        color: "#27ae60",
-      });
-    app.stage.addChild(circle);
-  });
-
-  const font = await Assets.load("/fonts/roboto.ttf");
-  const style = new TextStyle({
-    fill: "#7f8c8d",
-    fontSize: 72,
-    fontFamily: font.family,
-  });
-  const text = new Text({
-    text: "Hello Bits!",
-    style: style,
-  });
-  app.stage.addChild(text);
-
   document.body.appendChild(app.canvas);
 
-  const warriorsContainer = new Container();
-  app.stage.addChild(warriorsContainer);
+  const atlasData = {
+    frames: {
+      walk1: {
+        frame: { x: 0, y: 0, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk2: {
+        frame: { x: 0, y: 16, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk3: {
+        frame: { x: 0, y: 32, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk4: {
+        frame: { x: 0, y: 48, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
 
-  const knighSprite = new Sprite(knighsAssets.gold);
-  knighSprite.scale.set(2, 2);
+      walk_back1: {
+        frame: { x: 16, y: 0, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk_back2: {
+        frame: { x: 16, y: 16, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk_back3: {
+        frame: { x: 16, y: 32, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+      walk_back4: {
+        frame: { x: 16, y: 48, w: 16, h: 16 },
+        sourceSize: { w: 64, h: 112 },
+        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
+      },
+    },
+    meta: {
+      image: "/img/SpriteSheet.png",
+      size: { w: 64, h: 112 },
+    },
+    animations: {
+      walk: ["walk1", "walk2", "walk3", "walk4"],
+      walk_back: ["walk_back1", "walk_back2", "walk_back3", "walk_back4"],
+    },
+  };
 
-  warriorsContainer.addChild(knighSprite);
-  warriorsContainer.position.set(512, 256);
+  const texture = await Assets.load(atlasData.meta.image);
+  const spritesheet = new Spritesheet(texture, atlasData);
+  await spritesheet.parse();
 
-  console.log(`${knighSprite.getGlobalPosition().x}`);
+  //   const animatedsprite = new AnimatedSprite(spritesheet.animations.walk);
+  const animatedsprite = new AnimatedSprite(spritesheet.animations.walk_back);
+  animatedsprite.scale.set(2, 2);
+  app.stage.addChild(animatedsprite);
+  animatedsprite.play();
+  animatedsprite.animationSpeed = 0.1;
 })();
