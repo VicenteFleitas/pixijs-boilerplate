@@ -1,4 +1,4 @@
-import { Application, Graphics } from "pixi.js";
+import { Application, Graphics, Text, TextStyle } from "pixi.js";
 
 (async () => {
   const app = new Application();
@@ -23,6 +23,17 @@ import { Application, Graphics } from "pixi.js";
       color: "#f39c12",
     });
   app.stage.addChild(rectangle);
+
+  const style = new TextStyle({
+    fill: "#7f8c8d",
+    fontSize: 72,
+    fontFamily: "Roboto",
+  });
+  const text = new Text({
+    text: "Hello Bits!",
+    style: style,
+  });
+  app.stage.addChild(text);
 
   document.body.appendChild(app.canvas);
 })();
