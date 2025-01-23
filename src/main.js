@@ -49,7 +49,6 @@ import {
   app.stage.addChild(text);
 
   const texture = await Assets.load("/img/SpriteSheet.png");
-  //   const sprite = Sprite.from(texture);
   const sprite = new Sprite(texture); // 128, 224
   sprite.x = 512;
   sprite.y = 256;
@@ -59,6 +58,21 @@ import {
   sprite.anchor.y = 0.5;
   sprite.rotation = Math.PI / 4;
   app.stage.addChild(sprite);
+
+  const circle = new Graphics();
+
+  app.ticker.add(() => {
+    circle
+      .circle(
+        Math.random() * app.screen.width,
+        Math.random() * app.screen.height,
+        5
+      )
+      .fill({
+        color: "#27ae60",
+      });
+    app.stage.addChild(circle);
+  });
 
   document.body.appendChild(app.canvas);
 })();
