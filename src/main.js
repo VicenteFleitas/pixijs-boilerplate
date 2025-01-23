@@ -5,6 +5,7 @@ import {
   TextStyle,
   Sprite,
   Assets,
+  Container,
 } from "pixi.js";
 
 (async () => {
@@ -75,4 +76,16 @@ import {
   });
 
   document.body.appendChild(app.canvas);
+
+  const warriorsContainer = new Container();
+  app.stage.addChild(warriorsContainer);
+
+  const knighTexture = await Assets.load("/img/SpriteSheet2.png");
+  const knighSprite = new Sprite(knighTexture);
+  knighSprite.scale.set(2, 2);
+
+  warriorsContainer.addChild(knighSprite);
+  warriorsContainer.position.set(512, 256);
+
+  console.log(`${knighSprite.getGlobalPosition().x}`);
 })();
