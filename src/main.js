@@ -8,7 +8,10 @@ import {
   Container,
   Spritesheet,
   AnimatedSprite,
+  TilingSprite,
+  NoiseFilter,
 } from "pixi.js";
+import { Howl } from "howler";
 
 (async () => {
   const app = new Application();
@@ -23,68 +26,42 @@ import {
   document.body.style.margin = 0;
   document.body.appendChild(app.canvas);
 
-  const atlasData = {
-    frames: {
-      walk1: {
-        frame: { x: 0, y: 0, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk2: {
-        frame: { x: 0, y: 16, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk3: {
-        frame: { x: 0, y: 32, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk4: {
-        frame: { x: 0, y: 48, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
+  const bg_texture = await Assets.load("/img/bg2.jpg");
+  const bgSprite = new TilingSprite({
+    texture: bg_texture,
+    width: app.screen.width,
+    height: app.screen.height,
+  });
+  //   bgSprite.scale.set(4.5, 4.5);
+  bgSprite.filters = [new NoiseFilter({ noise: 0.1 })];
+  app.stage.addChild(bgSprite);
 
-      walk_back1: {
-        frame: { x: 16, y: 0, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk_back2: {
-        frame: { x: 16, y: 16, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk_back3: {
-        frame: { x: 16, y: 32, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-      walk_back4: {
-        frame: { x: 16, y: 48, w: 16, h: 16 },
-        sourceSize: { w: 64, h: 112 },
-        spriteSourceSize: { x: 0, y: 0, w: 64, h: 112 },
-      },
-    },
-    meta: {
-      image: "/img/SpriteSheet.png",
-      size: { w: 64, h: 112 },
-    },
-    animations: {
-      walk: ["walk1", "walk2", "walk3", "walk4"],
-      walk_back: ["walk_back1", "walk_back2", "walk_back3", "walk_back4"],
-    },
-  };
+  //   SOUND
+  const sound = new Howl({
+    src: ["/audio/beep.mp3"],
+  });
+
+  let atlasData = await fetch("/img/atlas.json");
+  atlasData = await atlasData.json();
 
   const texture = await Assets.load(atlasData.meta.image);
   const spritesheet = new Spritesheet(texture, atlasData);
   await spritesheet.parse();
 
   //   const animatedsprite = new AnimatedSprite(spritesheet.animations.walk);
-  const animatedsprite = new AnimatedSprite(spritesheet.animations.walk_back);
-  animatedsprite.scale.set(2, 2);
+  const animatedsprite = new AnimatedSprite(spritesheet.animations.walk);
+  animatedsprite.scale.set(3, 3);
+  animatedsprite.position.set(512, 512);
   app.stage.addChild(animatedsprite);
   animatedsprite.play();
   animatedsprite.animationSpeed = 0.1;
+
+  animatedsprite.eventMode = "static";
+  animatedsprite.on("mousedown", () => {
+    sound.play();
+  });
+
+  app.ticker.add(() => {
+    bgSprite.tilePosition.x -= 1;
+  });
 })();
