@@ -38,10 +38,11 @@ import {
     rectangle.y -= 5;
   });
 
+  const font = await Assets.load("/fonts/roboto.ttf");
   const style = new TextStyle({
     fill: "#7f8c8d",
     fontSize: 72,
-    fontFamily: "Roboto",
+    fontFamily: font.family,
   });
   const text = new Text({
     text: "Hello Bits!",
