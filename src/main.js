@@ -38,25 +38,13 @@ import {
     rectangle.y -= 5;
   });
 
-  const font = await Assets.load("/fonts/roboto.ttf");
-  const style = new TextStyle({
-    fill: "#7f8c8d",
-    fontSize: 72,
-    fontFamily: font.family,
-  });
-  const text = new Text({
-    text: "Hello Bits!",
-    style: style,
-  });
-  app.stage.addChild(text);
-
-  Assets.addBundle("knighs", {
-    gold: "/img/SpriteSheet2.png",
-    grey: "/img/SpriteSheet.png",
-  });
+  //   Assets.addBundle("knighs", {
+  //     gold: "/img/SpriteSheet2.png",
+  //     grey: "/img/SpriteSheet.png",
+  //   });
+  await Assets.init({ manifest: "/manifest.json" });
   const knighsAssets = await Assets.loadBundle("knighs");
 
-  //   const texture = await Assets.load("/img/SpriteSheet.png");
   const sprite = new Sprite(knighsAssets.grey); // 128, 224
   sprite.x = 512;
   sprite.y = 256;
@@ -82,12 +70,23 @@ import {
     app.stage.addChild(circle);
   });
 
+  const font = await Assets.load("/fonts/roboto.ttf");
+  const style = new TextStyle({
+    fill: "#7f8c8d",
+    fontSize: 72,
+    fontFamily: font.family,
+  });
+  const text = new Text({
+    text: "Hello Bits!",
+    style: style,
+  });
+  app.stage.addChild(text);
+
   document.body.appendChild(app.canvas);
 
   const warriorsContainer = new Container();
   app.stage.addChild(warriorsContainer);
 
-  //   const knighTexture = await Assets.load("/img/SpriteSheet2.png");
   const knighSprite = new Sprite(knighsAssets.gold);
   knighSprite.scale.set(2, 2);
 
