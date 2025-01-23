@@ -30,6 +30,12 @@ import {
       color: "#f39c12",
     });
   app.stage.addChild(rectangle);
+  rectangle.eventMode = "static";
+  rectangle.cursor = "pointer";
+  rectangle.on("mousedown", (event) => {
+    rectangle.x -= 5;
+    rectangle.y -= 5;
+  });
 
   const style = new TextStyle({
     fill: "#7f8c8d",
